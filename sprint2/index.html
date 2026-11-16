@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Procediment per preparar el projecte MLOps: estructura, entorn Python, llibreries, Ollama i Visual Studio Code.">
+  <meta name="author" content="Nom Cognom1 Cognom2">
+  <meta name="keywords" content="Sprint 2, MLOps, Python, Ollama, Visual Studio Code, llibreries">
+  <title>Sprint 2 · Preparació de l'entorn MLOps</title>
+  <link rel="stylesheet" href="../css/estils.css">
+</head>
+<body>
+
+<header class="hero">
+  <nav class="hero-nav">
+    <a href="../index.html">Portada</a>
+    <a href="../sprints.html">Windows</a>
+    <a href="https://github.com/" target="_blank" rel="noopener">Codi a GitHub ↗</a>
+  </nav>
+  <div class="hero-titol">
+    <p class="miguetes"><a href="../index.html">Portada</a> / <a href="../sprints.html">Windows</a> / Sprint 2</p>
+    <h1>Sprint 2 · Preparació de l'entorn MLOps</h1>
+    <p class="subtitol">Preparació del projecte, instal·lació de les eines i obertura amb Visual Studio Code</p>
+  </div>
+</header>
+
+<main class="contenidor">
+  <section class="panell">
+    <a id="index-apartats"></a>
+    <table class="taula-apartats">
+      <thead><tr><th>#</th><th>Apartat</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><a href="#apartat1">Copiar les dades del projecte</a></td></tr>
+        <tr><td>2</td><td><a href="#apartat2">Crear l'entorn de Python i instal·lar les llibreries</a></td></tr>
+        <tr><td>3</td><td><a href="#apartat3">Instal·lar Ollama i descarregar el model</a></td></tr>
+        <tr><td>4</td><td><a href="#apartat4">Obrir la carpeta en l'editor</a></td></tr>
+      </tbody>
+    </table>
+
+    <article class="apartat" id="apartat1">
+      <h2>1. Copiar les dades del projecte</h2>
+      <p>No fa falta crear les carpetes manualment perquè he utilitzat el fitxer ZIP, que ja conté l'estructura del projecte. Després de copiar-ne el contingut, podem comprovar que les carpetes hi són amb l'ordre <strong>ls</strong>.</p>
+      <p>En executar l'ordre, es mostren les carpetes <strong>asistente_tutoria</strong>, <strong>cuaderno</strong> i <strong>servicio_modelo</strong>.</p>
+      <img src="../img/sprint2/estructura-zip.png" alt="Terminal amb les carpetes del projecte després d'executar ls">
+      <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
+    </article>
+
+    <article class="apartat" id="apartat2">
+      <h2>2. Crear l'entorn de Python i instal·lar les llibreries</h2>
+      <p>Primer actualitzem la llista de paquets del sistema i instal·lem <strong>python3-venv</strong> i <strong>curl</strong>, que necessitarem per preparar l'entorn i continuar amb la instal·lació.</p>
+      <pre><code>sudo apt update
+sudo apt install -y python3-venv curl</code></pre>
+      <img src="../img/sprint2/apt-update.png" alt="Terminal executant sudo apt update">
+      <img src="../img/sprint2/instal-lar-paquets.png" alt="Terminal instal·lant python3-venv i curl">
+
+      <p>A continuació, creem un entorn virtual anomenat <strong>venv</strong> i l'activem. Això permet instal·lar les llibreries del projecte en un entorn separat.</p>
+      <pre><code>python3 -m venv venv
+source venv/bin/activate</code></pre>
+      <img src="../img/sprint2/crear-entorn-i-pip.png" alt="Creació i activació de l'entorn virtual de Python">
+
+      <p>Amb l'entorn activat, instal·lem les llibreries que apareixen en el procediment: pandas, scikit-learn, joblib, fastapi, uvicorn i requests.</p>
+      <pre><code>python -m pip install pandas==3.1.1 scikit-learn==1.9.1 joblib==1.6.0 fastapi==0.162.2 uvicorn==0.54.0 requests==2.34.2</code></pre>
+      <img src="../img/sprint2/instal-lar-dependencies.png" alt="Terminal instal·lant les dependències de Python amb pip">
+      <p>Finalment, comprovem que les llibreries es poden importar correctament. Si el terminal mostra <strong>ok</strong>, la comprovació s'ha completat.</p>
+      <pre><code>python -c "import sklearn, fastapi, uvicorn, pandas, requests; print('ok')"</code></pre>
+      <img src="../img/sprint2/comprovar-llibreries.png" alt="Comprovació de les importacions de les llibreries amb el resultat ok">
+      <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
+    </article>
+
+    <article class="apartat" id="apartat3">
+      <h2>3. Instal·lar Ollama i descarregar el model de llenguatge</h2>
+      <p>Amb l'entorn preparat, instal·lem <strong>Ollama</strong> utilitzant l'ordre que es mostra a continuació. Aquesta eina permet executar models de llenguatge en l'equip.</p>
+      <pre><code>curl -fsSL https://ollama.com/install.sh | sh</code></pre>
+      <img src="../img/sprint2/instal-lar-ollama.png" alt="Terminal durant la instal·lació d'Ollama">
+
+      <p>Després comprovem l'estat del servei per veure si Ollama està actiu.</p>
+      <pre><code>systemctl status ollama</code></pre>
+      <img src="../img/sprint2/estat-ollama.png" alt="Estat del servei Ollama actiu i en execució">
+
+      <p>Quan el servei està en funcionament, descarreguem el model <strong>llama3.2:3b</strong>.</p>
+      <pre><code>ollama pull llama3.2:3b</code></pre>
+      <img src="../img/sprint2/descarregar-model.png" alt="Descàrrega del model llama3.2:3b amb Ollama">
+
+      <p>Per acabar, executem <strong>ollama list</strong> per comprovar que el model s'ha descarregat i apareix a la llista.</p>
+      <pre><code>ollama list</code></pre>
+      <img src="../img/sprint2/llista-models.png" alt="Llista d'Ollama on apareix el model llama3.2:3b">
+      <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
+    </article>
+
+    <article class="apartat" id="apartat4">
+      <h2>4. Obrir la carpeta en l'editor</h2>
+      <p>Finalment, obrim la carpeta del projecte amb un editor de codi. En aquest cas seleccionem <strong>Visual Studio Code</strong> en la finestra d'aplicacions i premem el botó per obrir-la.</p>
+      <img src="../img/sprint2/obrir-carpeta-vscode.png" alt="Finestra per seleccionar Visual Studio Code com a aplicació per obrir la carpeta">
+      <p>Quan s'obre Visual Studio Code, podem veure l'estructura de carpetes i els fitxers del projecte a l'explorador lateral.</p>
+      <img src="../img/sprint2/vscode-projecte-obert.png" alt="Projecte MLOps_abandono obert a Visual Studio Code">
+      <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
+    </article>
+  </section>
+</main>
+
+<footer class="peu">
+  <p class="peu-llicencia">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ca" target="_blank" rel="license noopener">
+      <img src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" alt="Llicència Creative Commons Reconeixement-NoComercial-CompartirIgual 4.0" width="88" height="31">
+    </a>
+    <span>Contingut sota llicència <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ca" target="_blank" rel="license noopener">CC BY-NC-SA 4.0</a></span>
+  </p>
+  <p class="autoria">Autor/a: <strong>Nom Cognom1 Cognom2</strong> · Pràctica 0 · Sistemes Operatius (ISOPJ1)</p>
+</footer>
+
+</body>
+</html>
